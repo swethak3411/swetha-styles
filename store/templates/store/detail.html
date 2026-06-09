@@ -1,0 +1,430 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>{{ product.name }}</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+<div class="product-container">
+
+    <!-- PRODUCT IMAGE -->
+
+    <div class="product-image-section">
+
+        <img src="{{ product.image.url }}"
+             id="mainImage"
+             class="main-product-image">
+
+        <h3>Available Colors</h3>
+
+        <div class="color-images">
+
+            {% for color in colors %}
+
+            <div style="
+            display:inline-block;
+            text-align:center;
+            margin:5px;
+            ">
+
+                <img src="{{ color.color_image.url }}"
+                     width="80"
+                     height="80"
+                     onclick="changeImage(
+                     '{{ color.color_image.url }}',
+                      '{{ color.color_name }}' 
+                      )"
+                     style="
+                     cursor:pointer;
+                     border-radius:10px;
+                     border:2px solid #ddd;
+                     ">
+
+                <br>
+
+                <small>{{ color.color_name }}</small>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <br>
+
+        <h3>More Images</h3>
+
+        <div class="extra-images">
+
+            {% for img in images %}
+
+                <img src="{{ img.image.url }}"
+                     width="100"
+                     onclick="changeImage('{{ img.image.url }}')"
+                     style="
+                     cursor:pointer;
+                     margin:5px;
+                     border-radius:10px;
+                     border:2px solid #ddd;
+                     ">
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    <!-- PRODUCT DETAILS -->
+
+    <div class="product-details">
+
+        <h1>{{ product.name }}</h1>
+
+        <p class="product-code">
+
+            Product Code: {{ product.product_code }}
+
+        </p>
+
+        <div class="rating">
+
+            ⭐⭐⭐⭐⭐
+
+        </div>
+
+        <div class="price-section">
+
+            <span class="old-price">
+
+                ₹{{ product.original_price }}
+
+            </span>
+
+            <br>
+
+            <span class="new-price">
+
+                ₹{{ product.price }}
+
+            </span>
+
+            <span class="discount">
+
+                {{ product.discount_percent }}% OFF
+
+            </span>
+
+        </div>
+
+        <br>
+
+        {% if product.stock > 0 %}
+
+            <p class="stock-badge">
+
+                🔥 Only {{ product.stock }} left
+
+            </p>
+
+        {% else %}
+
+            <p style="color:red;font-weight:bold;">
+
+                Sold Out
+
+            </p>
+
+        {% endif %}
+
+        <form action="/add-to-cart/{{ product.id }}/"
+      method="GET">
+
+    <input type="hidden"
+           id="selectedColor"
+           name="selected_color"
+           value="">
+
+    <input type="hidden"
+           name="product_id"
+           value="{{ product.id }}">
+           
+
+            <div class="quantity-box">
+
+                <button type="button"
+                        onclick="decreaseQuantity()">
+
+                    -
+
+                </button>
+
+                <input type="number"
+                       id="quantity"
+                       name="quantity"
+                       value="1"
+                       min="1">
+
+                <button type="button"
+                        onclick="increaseQuantity()">
+
+                    +
+
+                </button>
+
+            </div>
+
+            <br>
+
+            <select name="size">
+
+                {% for s in sizes %}
+
+                    {% if s.stock > 0 %}
+
+                        <option>
+
+                            {{ s.size }} - {{ s.stock }} left
+
+                        </option>
+
+                    {% else %}
+
+                        <option disabled>
+
+                            {{ s.size }} - Sold Out
+
+                        </option>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </select>
+
+            <br><br>
+
+            <button type="submit"
+                    class="cart-btn">
+
+                Add To Cart 🛒
+
+            </button>
+            
+            <button type="submit"
+        formaction="/order/">
+
+    Buy Now ⚡
+
+</button>
+        </form>
+
+    </div>
+
+</div>
+
+<hr>
+
+<div class="info-tabs">
+
+    <button onclick="showTab('description')">
+        Description
+    </button>
+
+    <button onclick="showTab('care')">
+        Care
+    </button>
+
+    <button onclick="showTab('returns')">
+        Returns
+    </button>
+
+</div>
+
+<div id="description" class="tab-content">
+
+    <h3>Description</h3>
+
+    <p>
+        {{ product.description }}
+    </p>
+
+</div>
+
+<div id="care" class="tab-content" style="display:none;">
+
+    <h3>Care Instructions</h3>
+
+    <ul>
+
+        <li>Dry wash recommended.</li>
+
+        <li>Do not bleach.</li>
+
+        <li>Iron on low heat.</li>
+
+        <li>Store in a cool dry place.</li>
+
+    </ul>
+
+</div>
+
+<div id="returns" class="tab-content" style="display:none;">
+
+    <h3>Return Policy</h3>
+
+    <ul>
+
+        <li>Returns accepted only for damaged products.</li>
+
+        <li>3-minute unboxing video required.</li>
+
+        <li>Color may slightly vary due to lighting.</li>
+
+        <li>Return request must be raised within 24 hours.</li>
+
+    </ul>
+
+</div>
+
+<hr>
+
+<h2>Customer Reviews ⭐</h2>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    <input type="text"
+           name="name"
+           placeholder="Your Name"
+           required>
+
+    <br><br>
+
+    <select name="rating">
+
+        <option value="5">⭐⭐⭐⭐⭐</option>
+        <option value="4">⭐⭐⭐⭐</option>
+        <option value="3">⭐⭐⭐</option>
+        <option value="2">⭐⭐</option>
+        <option value="1">⭐</option>
+
+    </select>
+
+    <br><br>
+
+    <textarea name="comment"
+              placeholder="Write Review"
+              required></textarea>
+
+    <br><br>
+
+    <button type="submit">
+
+        Submit Review
+
+    </button>
+
+</form>
+
+<hr>
+
+{% for review in reviews %}
+
+<div class="card">
+
+    <h3>{{ review.name }}</h3>
+
+    <p>⭐ {{ review.rating }}/5</p>
+
+    <p>{{ review.comment }}</p>
+
+</div>
+
+{% endfor %}
+
+<script>
+
+function increaseQuantity(){
+
+    let qty =
+    document.getElementById("quantity");
+
+    qty.value =
+    parseInt(qty.value) + 1;
+}
+
+function decreaseQuantity(){
+
+    let qty =
+    document.getElementById("quantity");
+
+    if(parseInt(qty.value) > 1){
+
+        qty.value =
+        parseInt(qty.value) - 1;
+    }
+}
+
+function changeImage(imageUrl,colorName){
+
+    document.getElementById("mainImage").src = imageUrl;
+
+    document.getElementById("selectedColor").value = colorName;
+
+    alert("Selected Color: " + colorName);
+
+}
+
+</script>
+
+<script>
+
+function showTab(tabName){
+
+    document.getElementById("description").style.display = "none";
+    document.getElementById("care").style.display = "none";
+    document.getElementById("returns").style.display = "none";
+
+    document.getElementById(tabName).style.display = "block";
+}
+
+</script>
+
+<hr>
+
+<h2>You May Also Like ❤️</h2>
+
+<div class="products">
+
+{% for p in related_products %}
+
+    <div class="card">
+
+        <img src="{{ p.image.url }}" width="200">
+
+        <h3>{{ p.name }}</h3>
+
+        <p>₹{{ p.price }}</p>
+
+        <a href="/product/{{ p.id }}/">
+            <button>View Product</button>
+        </a>
+
+    </div>
+
+{% endfor %}
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,56 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>My Orders</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+<h1 class="cart-title">📦 My Orders</h1>
+
+<div class="products">
+
+    {% for order in orders %}
+
+    <div class="card">
+
+        <img src="{{ order.product.image.url }}">
+
+        <h2>{{ order.product.name }}</h2>
+
+        <p>Total: ₹{{ order.total_price }}</p>
+
+        <h3>Quantity: {{ order.quantity }}</h3>
+
+        <h3>Status: {{ order.status }}</h3>
+
+        <a href="/invoice/{{ order.id }}/">
+
+    <button>
+
+        📄 Download Invoice
+
+    </button>
+
+</a>
+
+    </div>
+
+    {% empty %}
+
+    <h2>No Orders Yet 😄</h2>
+
+    {% endfor %}
+
+</div>
+
+</body>
+
+</html>

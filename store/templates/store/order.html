@@ -1,0 +1,471 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Secure Checkout</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+
+        body{
+            font-family:Poppins,sans-serif;
+            background:#f5f5f5;
+        }
+
+        .checkout-container{
+            max-width:1200px;
+            margin:30px auto;
+            display:flex;
+            gap:30px;
+        }
+
+        .checkout-left{
+            width:65%;
+            background:white;
+            padding:30px;
+            border-radius:15px;
+        }
+
+        .checkout-right{
+            width:35%;
+            background:white;
+            padding:30px;
+            border-radius:15px;
+            height:fit-content;
+        }
+
+        h1{
+            color:#0b2c6b;
+        }
+
+        .section-title{
+            color:#0b2c6b;
+            margin-top:20px;
+        }
+
+        input,textarea{
+            width:100%;
+            padding:12px;
+            margin-top:10px;
+            margin-bottom:15px;
+            border:1px solid #ddd;
+            border-radius:8px;
+        }
+
+        .product-image{
+            width:100%;
+            border-radius:10px;
+        }
+
+        .price-row{
+            display:flex;
+            justify-content:space-between;
+            margin:10px 0;
+        }
+
+        .total{
+            font-size:24px;
+            font-weight:bold;
+            color:#0b2c6b;
+        }
+
+        .save{
+            color:green;
+            font-weight:bold;
+        }
+
+        .pay-btn{
+            width:100%;
+            background:#0b2c6b;
+            color:white;
+            border:none;
+            padding:15px;
+            border-radius:10px;
+            font-size:18px;
+            cursor:pointer;
+            margin-top:20px;
+        }
+
+        .badges{
+            margin-top:20px;
+        }
+
+        .badges p{
+            margin:8px 0;
+            color:#444;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="checkout-container">
+
+    <!-- LEFT SIDE -->
+
+    <div class="checkout-left">
+
+        <h1>🔒 Secure Checkout</h1>
+
+        <p>Complete your purchase securely</p>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <h2 class="section-title">
+                Contact Details
+            </h2>
+
+            <input type="text"
+                   name="name"
+                   placeholder="First Name"
+                   required>
+
+            <input type="text"
+                   name="phone"
+                   placeholder="Enter 10-digit number"
+                   required>
+
+            <h2 class="section-title">
+                Shipping Address
+            </h2>
+
+            <textarea
+                name="address"
+                placeholder="House No., Street, Area"
+                required></textarea>
+
+            <input type="text"
+                   name="city"
+                   placeholder="City"
+                   required>
+
+            <input type="text"
+                   name="coupon"
+                   placeholder="Coupon Code (NEWUSER5)">
+
+            <button type="submit"
+                    name="check_coupon">
+
+                Apply Coupon
+
+            </button>
+
+            <input type="hidden"
+                   name="payment"
+                   value="Razorpay">
+
+        
+
+    </div>
+
+
+    <title>Secure Checkout</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+
+        body{
+            font-family:Poppins,sans-serif;
+            background:#f5f5f5;
+        }
+
+        .checkout-container{
+            max-width:1200px;
+            margin:30px auto;
+            display:flex;
+            gap:30px;
+        }
+
+        .checkout-left{
+            width:65%;
+            background:white;
+            padding:30px;
+            border-radius:15px;
+        }
+
+        .checkout-right{
+            width:35%;
+            background:white;
+            padding:30px;
+            border-radius:15px;
+            height:fit-content;
+        }
+
+        h1{
+            color:#0b2c6b;
+        }
+
+        .section-title{
+            color:#0b2c6b;
+            margin-top:20px;
+        }
+
+        input,textarea{
+            width:100%;
+            padding:12px;
+            margin-top:10px;
+            margin-bottom:15px;
+            border:1px solid #ddd;
+            border-radius:8px;
+        }
+
+        .product-image{
+            width:100%;
+            border-radius:10px;
+        }
+
+        .price-row{
+            display:flex;
+            justify-content:space-between;
+            margin:10px 0;
+        }
+
+        .total{
+            font-size:24px;
+            font-weight:bold;
+            color:#0b2c6b;
+        }
+
+        .save{
+            color:green;
+            font-weight:bold;
+        }
+
+        .pay-btn{
+            width:100%;
+            background:#0b2c6b;
+            color:white;
+            border:none;
+            padding:15px;
+            border-radius:10px;
+            font-size:18px;
+            cursor:pointer;
+            margin-top:20px;
+        }
+
+        .badges{
+            margin-top:20px;
+        }
+
+        .badges p{
+            margin:8px 0;
+            color:#444;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- RIGHT SIDE -->
+
+    <div class="checkout-right">
+
+        <h2>Order Summary</h2>
+
+        {% if color_image %}
+
+    <img src="{{ color_image.url }}"
+         width="250">
+
+    {% else %}
+
+    <img src="{{ product.image.url }}"
+         width="250">
+
+    {% endif %}
+
+            
+
+        <h3>{{ product.name }}</h3>
+
+        <p><b>Selected Color:</b> {{ selected_color }}</p>
+
+        <p>Qty: {{ quantity }}</p>
+
+        <hr>
+
+        <div class="price-row">
+
+            <span>Subtotal</span>
+
+            <span>₹{{ total_price }}</span>
+
+        </div>
+
+        <div class="price-row">
+
+            <span>Discount</span>
+
+            <span class="save">
+                -₹{{ discount }}
+            </span>
+
+        </div>
+
+        <div class="price-row">
+
+            <span>Shipping</span>
+
+            <span>FREE</span>
+
+        </div>
+
+        <hr>
+
+        <div class="price-row total">
+
+            <span>Total</span>
+
+            <span>₹{{ final_price }}</span>
+
+        </div>
+
+        {% if discount > 0 %}
+
+        <p class="save">
+
+            You saved ₹{{ discount }} 🎉
+
+        </p>
+
+        {% endif %}
+
+        <h3>Select Payment Method</h3>
+
+<input type="radio"
+       name="payment"
+       value="COD"
+       checked
+       onclick="showButton()">
+Cash On Delivery
+
+<br><br>
+
+<input type="radio"
+       name="payment"
+       value="Online"
+       onclick="showButton()">
+Online Payment
+
+<br><br>
+
+<button type="submit"
+        id="codBtn">
+
+    Confirm Order ✅
+
+</button>
+
+<button type="button"
+        id="onlineBtn"
+        style="display:none;">
+
+    Pay ₹{{ final_price }} Securely 💳
+
+</button>
+
+        <div class="badges">
+
+            <p>🚚 Free Shipping</p>
+
+            <p>🔒 Secure Payment</p>
+
+            <p>📦 Safe Packaging</p>
+
+            <p>💳 Secure checkout powered by Razorpay</p>
+
+        </div>
+
+    </div>
+   
+</div>
+</form>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+
+var options = {
+
+    "key": "{{ razorpay_key }}",
+
+    "amount": "{{ payment.amount }}",
+
+    "currency": "INR",
+
+    "name": "Swetha Styles",
+
+    "description": "Fashion For Everyone",
+
+    "order_id": "{{ payment.id }}",
+
+    "theme": {
+        "color": "#0b2c6b"
+    }
+
+};
+
+var rzp1 = new Razorpay(options);
+
+document.getElementById("onlineBtn").onclick = function(e){
+
+    rzp1.open();
+
+    e.preventDefault();
+
+}
+
+</script>
+
+<script>
+
+function showButton(){
+
+    let online =
+    document.querySelector(
+    'input[value="Online"]'
+    );
+
+    let onlineBtn =
+    document.getElementById(
+    "onlineBtn"
+    );
+
+    let codBtn =
+    document.getElementById(
+    "codBtn"
+    );
+
+    if(online.checked){
+
+        onlineBtn.style.display =
+        "block";
+
+        codBtn.style.display =
+        "none";
+    }
+
+    else{
+
+        onlineBtn.style.display =
+        "none";
+
+        codBtn.style.display =
+        "block";
+    }
+}
+
+</script>
+</body>
+
+</html>

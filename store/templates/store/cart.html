@@ -1,0 +1,47 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Cart</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+<h1 class="cart-title">Your Cart 🛒</h1>
+
+<div class="cart-card">
+
+    <img src="{{ product.image.url }}" alt="">
+     <p>
+     Color: {{ selected_color }}
+    </p>
+
+    <div class="cart-details">
+
+        <h2>{{ product.name }}</h2>
+
+        <p>₹{{ product.price }}</p>
+
+        <h3>Quantity: {{ quantity }}</h3>
+
+        <h2>Total Price: ₹{{ total }}</h2>
+
+        <a href="/order/?product_id={{ product.id }}&quantity={{ quantity }}">
+
+    <button>Place Order</button>
+
+</a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html> 

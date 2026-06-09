@@ -1,0 +1,302 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <title>Swetha Styles</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <a href="/">Home</a>
+
+    <a href="/profile/">👤 My Profile</a>
+
+    <a href="/wishlist/">❤️ Wishlist</a>
+
+    <a href="/my-orders/">📦 My Orders</a>
+
+    {% if user.is_authenticated %}
+
+        <a href="/logout/">Logout</a>
+
+    {% else %}
+
+        <a href="/register/">Register</a>
+
+        <a href="/login/">Login</a>
+
+    {% endif %}
+
+</div>
+
+{% if user.is_authenticated %}
+
+<h2 class="welcome-text">
+
+    Welcome {{ user.first_name }} 👋
+
+</h2>
+
+{% endif %}
+
+<!-- HERO BANNER -->
+
+<div class="hero-banner">
+
+    <img src="{% static 'images/banner.jpg' %}"
+         class="hero-image">
+
+    <div class="hero-content">
+
+        <h1>Swetha Styles ✨</h1>
+
+        <h2>Luxury Ethnic & Modern Wear</h2>
+
+        <p>
+
+            Discover elegant sarees, stylish kurtis,
+            and trendy fashion collections.
+
+        </p>
+
+        <a href="#products">
+
+            <button class="shop-btn">
+
+                Shop Now
+
+            </button>
+
+        </a>
+
+    </div>
+
+</div>
+
+<!-- CATEGORIES -->
+
+<div class="categories">
+
+    <a href="/">All</a>
+
+    <a href="/?category=Saree">Sarees</a>
+
+    <a href="/?category=Kurthi">Kurthis</a>
+
+    <a href="/?category=Jeans Top">Jeans Tops</a>
+
+</div>
+
+<br>
+
+<center>
+
+<form method="GET">
+
+    <input type="text"
+           name="search"
+           placeholder="Search Product">
+
+    <button type="submit">
+
+        Search
+
+    </button>
+
+</form>
+
+</center>
+
+<br>
+
+<!-- PRODUCTS -->
+
+<div class="products" id="products">
+
+    {% for product in products %}
+
+    <div class="card">
+
+        <!-- SALE BADGE -->
+
+        <div style="position:relative;">
+
+            <span style="
+            position:absolute;
+            top:10px;
+            left:10px;
+            background:red;
+            color:white;
+            padding:6px 12px;
+            border-radius:20px;
+            font-size:12px;
+            font-weight:bold;
+            ">
+
+                SALE 🔥
+
+            </span>
+
+            <img src="{{ product.image.url }}">
+
+        </div>
+
+        <h2>{{ product.name }}</h2>
+
+        <!-- STAR RATING -->
+
+        <div style="
+        color:gold;
+        font-size:18px;
+        ">
+
+            ⭐⭐⭐⭐⭐
+
+        </div>
+
+        <h4>{{ product.product_code }}</h4>
+
+        <!-- PRICE SECTION -->
+
+        <div style="margin-top:10px;">
+
+            <span style="
+            text-decoration:line-through;
+            color:gray;
+            font-size:15px;
+            ">
+
+                ₹{{ product.original_price }}
+
+            </span>
+
+            <br>
+
+            <span style="
+            color:#0b2c6b;
+            font-size:24px;
+            font-weight:bold;
+            ">
+
+                ₹{{ product.price }}
+
+            </span>
+
+            <span style="
+            color:green;
+            font-size:15px;
+            font-weight:bold;
+            margin-left:5px;
+            ">
+
+                {{ product.discount_percent }}% OFF
+
+            </span>
+
+        </div>
+
+        <br>
+
+        {% if product.stock > 0 %}
+
+            <p style="
+            color:green;
+            font-weight:bold;
+            ">
+
+                Only {{ product.stock }} left 🔥
+
+            </p>
+
+            <a href="/product/{{ product.id }}/">
+
+                <button>
+
+                    View Details
+
+                </button>
+
+            </a>
+
+        {% else %}
+
+            <button disabled
+                    style="
+                    background:red;
+                    color:white;
+                    ">
+
+                Sold Out
+
+            </button>
+
+        {% endif %}
+
+        <br><br>
+
+        <a href="/add-to-wishlist/{{ product.id }}/">
+
+            <button>
+
+                ❤️ Wishlist
+
+            </button>
+
+        </a>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+<!-- WHY CHOOSE US -->
+
+<div style="
+text-align:center;
+padding:40px;
+margin-top:40px;
+background:#f5f7fb;
+">
+
+    <h2 style="color:#0b2c6b;">
+
+        Why Choose Swetha Styles?
+
+    </h2>
+
+    <br>
+
+    <h3>🚚 Fast Delivery</h3>
+
+    <h3>💎 Premium Quality</h3>
+
+    <h3>🔄 Easy Returns</h3>
+
+    <h3>❤️ Trusted Boutique</h3>
+
+</div>
+
+<!-- FOOTER -->
+
+<div class="footer">
+
+    <h3>Swetha Styles Boutique ✨</h3>
+
+    <p>Fashion for Every Occasion</p>
+
+</div>
+
+</body>
+
+</html>

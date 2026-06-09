@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Wishlist</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+<h1 class="cart-title">❤️ My Wishlist</h1>
+
+<div class="products">
+
+    {% for item in items %}
+
+    <div class="card">
+
+        <img src="{{ item.product.image.url }}">
+
+        <h2>{{ item.product.name }}</h2>
+
+        <p>₹{{ item.product.price }}</p>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+</body>
+
+</html>
