@@ -23,10 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-rp2!5qkpwfzz-ra_bcrwsx#9!&hpcn*9$7c20&#upvs*w2k@&k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -124,3 +123,5 @@ LOGIN_URL = '/login/'
 RAZORPAY_KEY_ID = 'rzp_test_StTEqOToBBTVxT'
 
 RAZORPAY_KEY_SECRET = 'BlhygyGIzA9kCiyOFdt0VBB3'
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
